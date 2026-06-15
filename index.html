@@ -87,12 +87,14 @@
             <button onclick="closeDrawer()" class="p-2"><i data-lucide="x" class="w-5 h-5"></i></button>
         </div>
         <nav class="flex-1 overflow-y-auto px-4 py-2 space-y-1">
+            <button onclick="navigate('dashboard'); closeDrawer()" class="w-full text-left py-3 font-medium flex items-center gap-3"><i data-lucide="layout-dashboard" class="w-5 h-5 text-primary"></i> Dashboard</button>
             <button onclick="navigate('kategori'); closeDrawer()" class="w-full text-left py-3 font-medium flex items-center gap-3"><i data-lucide="tags" class="w-5 h-5 text-primary"></i> Master Kategori</button>
             <button onclick="navigate('checkout'); closeDrawer()" class="w-full text-left py-3 font-medium flex items-center gap-3"><i data-lucide="shopping-cart" class="w-5 h-5 text-primary"></i> Checkout</button>
             <button onclick="navigate('revisi'); closeDrawer()" class="w-full text-left py-3 font-medium flex items-center gap-3"><i data-lucide="edit-3" class="w-5 h-5 text-primary"></i> Revisi Owner</button>
             <button onclick="navigate('histori'); closeDrawer()" class="w-full text-left py-3 font-medium flex items-center gap-3"><i data-lucide="history" class="w-5 h-5 text-primary"></i> Histori</button>
             <button onclick="navigate('sync'); closeDrawer()" class="w-full text-left py-3 font-medium flex items-center gap-3"><i data-lucide="refresh-cw" class="w-5 h-5 text-primary"></i> Sinkronisasi</button>
             <button onclick="navigate('shopee'); closeDrawer()" class="w-full text-left py-3 font-medium flex items-center gap-3"><i data-lucide="shopping-bag" class="w-5 h-5 text-primary"></i> Generate Shopee</button>
+            <button onclick="navigate('pengaturan'); closeDrawer()" class="w-full text-left py-3 font-medium flex items-center gap-3"><i data-lucide="settings" class="w-5 h-5 text-primary"></i> Pengaturan</button>
         </nav>
     </div>
 
@@ -190,18 +192,17 @@
                             <div>
                                 <label class="block text-sm font-medium mb-1">Sub Kategori</label>
                                 <select id="inp-sub" onchange="updateSKUPreview()" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl px-4 py-3 outline-none focus:border-primary">
-                                    <option value="PR">Premium</option>
-                                    <option value="SP">Semi Premium</option>
-                                    <option value="EX">Eksklusif</option>
-                                    <option value="KP">Katun Premium</option>
+                                    <!-- Populated dynamically -->
                                 </select>
                             </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium mb-1" id="label-ukuran">Panjang Kain</label>
-                                <select id="inp-ukuran" onchange="updateSKUPreview()" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl px-4 py-3 outline-none focus:border-primary"></select>
+                                <label class="block text-sm font-medium mb-1" id="label-ukuran">Panjang Kain / Ukuran</label>
+                                <select id="inp-ukuran" onchange="updateSKUPreview()" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl px-4 py-3 outline-none focus:border-primary">
+                                    <!-- Populated dynamically -->
+                                </select>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-1">Stok</label>
@@ -247,6 +248,37 @@
                     </div>
                 </div>
                 <div id="card-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+            </div>
+
+            <!-- VIEW: KATEGORI (MASTER DATA) -->
+            <div id="view-kategori" class="view-section">
+                <h2 class="text-2xl font-bold mb-6">Master Kategori & Varian</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Sub Kategori -->
+                    <div class="bg-white dark:bg-darkSurface p-5 rounded-2xl border shadow-sm flex flex-col h-[500px]">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="font-bold">Sub Kategori</h3>
+                            <button onclick="openMasterModal('subKategori')" class="bg-primary text-white p-2 rounded-lg text-xs font-bold"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                        </div>
+                        <div id="list-subKategori" class="flex-1 overflow-y-auto space-y-2 pr-2"></div>
+                    </div>
+                    <!-- Varian Kain -->
+                    <div class="bg-white dark:bg-darkSurface p-5 rounded-2xl border shadow-sm flex flex-col h-[500px]">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="font-bold">Panjang Kain</h3>
+                            <button onclick="openMasterModal('varianKain')" class="bg-primary text-white p-2 rounded-lg text-xs font-bold"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                        </div>
+                        <div id="list-varianKain" class="flex-1 overflow-y-auto space-y-2 pr-2"></div>
+                    </div>
+                    <!-- Varian Baju -->
+                    <div class="bg-white dark:bg-darkSurface p-5 rounded-2xl border shadow-sm flex flex-col h-[500px]">
+                        <div class="flex justify-between items-center mb-4 border-b pb-2">
+                            <h3 class="font-bold">Ukuran Baju</h3>
+                            <button onclick="openMasterModal('varianBaju')" class="bg-primary text-white p-2 rounded-lg text-xs font-bold"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                        </div>
+                        <div id="list-varianBaju" class="flex-1 overflow-y-auto space-y-2 pr-2"></div>
+                    </div>
+                </div>
             </div>
 
             <!-- VIEW: CHECKOUT -->
@@ -364,37 +396,6 @@
                 </div>
             </div>
 
-            <!-- VIEW: KATEGORI (MASTER DATA) -->
-            <div id="view-kategori" class="view-section">
-                <h2 class="text-2xl font-bold mb-6">Master Kategori & Varian</h2>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <!-- Sub Kategori -->
-                    <div class="bg-white dark:bg-darkSurface p-5 rounded-2xl border shadow-sm flex flex-col h-[500px]">
-                        <div class="flex justify-between items-center mb-4 border-b pb-2">
-                            <h3 class="font-bold">Sub Kategori</h3>
-                            <button onclick="openMasterModal('subKategori')" class="bg-primary text-white p-2 rounded-lg text-xs font-bold"><i data-lucide="plus" class="w-4 h-4"></i></button>
-                        </div>
-                        <div id="list-subKategori" class="flex-1 overflow-y-auto space-y-2 pr-2"></div>
-                    </div>
-                    <!-- Varian Kain -->
-                    <div class="bg-white dark:bg-darkSurface p-5 rounded-2xl border shadow-sm flex flex-col h-[500px]">
-                        <div class="flex justify-between items-center mb-4 border-b pb-2">
-                            <h3 class="font-bold">Panjang Kain</h3>
-                            <button onclick="openMasterModal('varianKain')" class="bg-primary text-white p-2 rounded-lg text-xs font-bold"><i data-lucide="plus" class="w-4 h-4"></i></button>
-                        </div>
-                        <div id="list-varianKain" class="flex-1 overflow-y-auto space-y-2 pr-2"></div>
-                    </div>
-                    <!-- Varian Baju -->
-                    <div class="bg-white dark:bg-darkSurface p-5 rounded-2xl border shadow-sm flex flex-col h-[500px]">
-                        <div class="flex justify-between items-center mb-4 border-b pb-2">
-                            <h3 class="font-bold">Ukuran Baju</h3>
-                            <button onclick="openMasterModal('varianBaju')" class="bg-primary text-white p-2 rounded-lg text-xs font-bold"><i data-lucide="plus" class="w-4 h-4"></i></button>
-                        </div>
-                        <div id="list-varianBaju" class="flex-1 overflow-y-auto space-y-2 pr-2"></div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </main>
 
@@ -410,6 +411,26 @@
             <button onclick="openDrawer()" class="flex flex-col items-center p-2 text-slate-500"><i data-lucide="menu" class="w-6 h-6"></i></button>
         </div>
     </nav>
+
+    <!-- MODAL MASTER KATEGORI -->
+    <div id="modal-master" class="fixed inset-0 bg-black/80 z-[70] hidden flex-col justify-center items-center opacity-0 transition-opacity p-4">
+        <div class="w-full max-w-sm bg-white dark:bg-darkSurface rounded-2xl p-6 relative">
+            <button onclick="closeMasterModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i data-lucide="x" class="w-5 h-5"></i></button>
+            <h3 class="font-bold text-lg mb-4" id="modal-master-title">Tambah Data</h3>
+            <input type="hidden" id="master-type">
+            <input type="hidden" id="master-old-id">
+            <div class="mb-3">
+                <label class="text-xs font-medium">Kode (Singkatan / Value)</label>
+                <input type="text" id="master-id" class="w-full border rounded-xl px-3 py-2 mt-1 bg-slate-50 dark:bg-slate-900 outline-none focus:border-primary uppercase" placeholder="Cth: PR, 200, XL">
+                <p class="text-[10px] text-red-500 mt-1 hidden" id="master-id-error">Kode sudah ada!</p>
+            </div>
+            <div class="mb-4">
+                <label class="text-xs font-medium">Nama Lengkap / Label</label>
+                <input type="text" id="master-nama" class="w-full border rounded-xl px-3 py-2 mt-1 bg-slate-50 dark:bg-slate-900 outline-none focus:border-primary" placeholder="Cth: Premium, 2 Meter">
+            </div>
+            <button onclick="simpanMaster()" class="btn-press w-full bg-primary text-white py-3 rounded-xl font-bold">Simpan Data</button>
+        </div>
+    </div>
 
     <!-- MODAL QUICK ACTION -->
     <div id="modal-quick" class="fixed inset-0 bg-black/60 z-50 hidden flex-col justify-end items-center transition-opacity opacity-0">
@@ -433,23 +454,56 @@
         </div>
     </div>
 
-    <!-- MODAL MASTER KATEGORI -->
-    <div id="modal-master" class="fixed inset-0 bg-black/80 z-[70] hidden flex-col justify-center items-center opacity-0 transition-opacity p-4">
-        <div class="w-full max-w-sm bg-white dark:bg-darkSurface rounded-2xl p-6 relative">
-            <button onclick="closeMasterModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-800"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h3 class="font-bold text-lg mb-4" id="modal-master-title">Tambah Data</h3>
-            <input type="hidden" id="master-type">
-            <input type="hidden" id="master-old-id">
-            <div class="mb-3">
-                <label class="text-xs font-medium">Kode (Singkatan / Value)</label>
-                <input type="text" id="master-id" class="w-full border rounded-xl px-3 py-2 mt-1 bg-slate-50 dark:bg-slate-900 outline-none focus:border-primary uppercase" placeholder="Cth: PR, 200, XL">
-                <p class="text-[10px] text-red-500 mt-1 hidden" id="master-id-error">Kode sudah ada!</p>
+    <!-- MODAL DETAIL -->
+    <div id="modal-detail" class="fixed inset-0 bg-black/80 z-50 hidden flex-col justify-end md:justify-center items-center opacity-0 transition-opacity">
+        <div class="bg-white dark:bg-darkSurface w-full h-[90vh] md:h-[80vh] md:w-[500px] rounded-t-3xl md:rounded-3xl flex flex-col overflow-hidden">
+            <div class="p-4 border-b flex justify-between items-center"><h3 class="font-bold">Detail Produk</h3><button onclick="closeDetail()" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button></div>
+            <div class="flex-1 overflow-y-auto p-4 pb-24">
+                <img id="det-img" src="" class="w-full rounded-xl mb-4 border">
+                <div class="flex justify-between items-center mb-4">
+                    <h4 class="font-bold text-lg" id="det-nama"></h4>
+                    <span id="det-status" class="px-2 py-1 text-xs rounded font-bold"></span>
+                </div>
+                <div class="grid grid-cols-2 gap-4 text-sm mb-6 bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border">
+                    <div><span class="text-slate-500 block text-xs">SKU / Barcode</span><strong id="det-sku" class="font-mono"></strong></div>
+                    <div><span class="text-slate-500 block text-xs">Kategori</span><strong id="det-kat"></strong></div>
+                    <div><span class="text-slate-500 block text-xs">Harga Net (Shopee)</span><strong id="det-harga"></strong></div>
+                    <div><span class="text-slate-500 block text-xs">Stok</span><strong id="det-stok"></strong></div>
+                </div>
+                <div class="flex flex-col items-center justify-center p-4 border rounded-xl mb-4">
+                    <p class="text-xs text-slate-500 mb-2">QR Code Produk</p>
+                    <div id="qrcode-container" class="bg-white p-2 rounded mb-4"></div>
+                    <div class="w-full space-y-2">
+                        <button onclick="downloadDetailImg('QR')" class="btn-press w-full bg-slate-800 text-white py-2 rounded-xl text-sm flex items-center justify-center gap-2"><i data-lucide="download" class="w-4 h-4"></i> Download QR Code</button>
+                        <button onclick="downloadDetailImg('ORIGINAL')" class="btn-press w-full bg-slate-100 dark:bg-slate-700 py-2 rounded-xl text-sm flex items-center justify-center gap-2"><i data-lucide="image" class="w-4 h-4"></i> Download Gambar Asli</button>
+                        <button onclick="downloadDetailImg('WATERMARK')" class="btn-press w-full bg-slate-100 dark:bg-slate-700 py-2 rounded-xl text-sm flex items-center justify-center gap-2"><i data-lucide="image" class="w-4 h-4"></i> Download Gambar Watermark</button>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="closeDetail(); setTimeout(() => editProduk(activeProductForDetail.sku), 300);" class="btn-press flex-1 bg-blue-100 text-blue-600 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2"><i data-lucide="edit-3" class="w-4 h-4"></i> Edit Produk</button>
+                    <button onclick="closeDetail(); setTimeout(() => hapusProduk(activeProductForDetail.sku), 300);" class="btn-press flex-1 bg-red-100 text-red-600 py-3 rounded-xl text-sm font-bold flex items-center justify-center gap-2"><i data-lucide="trash-2" class="w-4 h-4"></i> Hapus</button>
+                </div>
             </div>
-            <div class="mb-4">
-                <label class="text-xs font-medium">Nama Lengkap / Label</label>
-                <input type="text" id="master-nama" class="w-full border rounded-xl px-3 py-2 mt-1 bg-slate-50 dark:bg-slate-900 outline-none focus:border-primary" placeholder="Cth: Premium, 2 Meter">
+        </div>
+    </div>
+
+    <!-- MODAL EDIT PRODUK -->
+    <div id="modal-edit" class="fixed inset-0 bg-black/80 z-[60] hidden flex-col justify-end md:justify-center items-center opacity-0 transition-opacity">
+        <div class="bg-white dark:bg-darkSurface w-full h-[80vh] md:h-auto md:w-[500px] rounded-t-3xl md:rounded-3xl flex flex-col overflow-hidden pb-safe">
+            <div class="p-4 border-b flex justify-between items-center"><h3 class="font-bold">Edit Produk</h3><button onclick="closeEditModal()" class="p-2 bg-slate-100 rounded-full"><i data-lucide="x" class="w-4 h-4"></i></button></div>
+            <div class="flex-1 overflow-y-auto p-4 space-y-4">
+                <input type="hidden" id="edit-sku">
+                <div><label class="block text-sm font-medium mb-1">Nama Produk</label><input type="text" id="edit-nama" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl px-4 py-3 outline-none"></div>
+                <div><label class="block text-sm font-medium mb-1">Harga Dasar (Rp)</label><input type="number" id="edit-harga" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl px-4 py-3 outline-none"></div>
+                <div><label class="block text-sm font-medium mb-1">Stok</label><input type="number" id="edit-stok" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl px-4 py-3 outline-none"></div>
+                <div><label class="block text-sm font-medium mb-1">Status</label>
+                    <select id="edit-status" class="w-full bg-slate-50 dark:bg-slate-900 border rounded-xl px-4 py-3 outline-none">
+                        <option value="Aktif">Aktif</option>
+                        <option value="Terjual">Terjual</option>
+                    </select>
+                </div>
+                <button onclick="simpanEdit()" class="btn-press w-full bg-primary text-white py-4 font-bold rounded-xl mt-4">Simpan Perubahan</button>
             </div>
-            <button onclick="simpanMaster()" class="btn-press w-full bg-primary text-white py-3 rounded-xl font-bold">Simpan Data</button>
         </div>
     </div>
 
@@ -457,7 +511,7 @@
     <div id="modal-scanner" class="fixed inset-0 bg-black/90 z-[60] hidden flex-col justify-center items-center p-4">
         <div class="w-full max-w-md bg-white dark:bg-darkSurface p-4 rounded-2xl relative">
             <button onclick="stopScanBarcode()" class="absolute -top-3 -right-3 p-2 bg-red-500 text-white rounded-full shadow-lg z-10 border-2 border-white"><i data-lucide="x" class="w-5 h-5"></i></button>
-            <h3 class="font-bold text-center mb-4 text-lg">Scan Barcode / QR</h3>
+            <h3 class="font-bold text-center mb-4 text-lg text-white dark:text-white">Scan Barcode / QR</h3>
             <div id="reader" class="w-full bg-black rounded-xl overflow-hidden"></div>
         </div>
     </div>
@@ -531,7 +585,11 @@
             return new Promise((resolve) => {
                 const tx = db.transaction(['products', 'syncQueue', 'history'], 'readonly');
                 const reqP = tx.objectStore('products').getAll();
-                reqP.onsuccess = () => { products = reqP.result || []; updateDashboard(); };
+                reqP.onsuccess = () => { 
+                    products = reqP.result || []; 
+                    syncSKUCounters(); // Sinkronisasi otomatis sku tracker dari semua data produk!
+                    updateDashboard(); 
+                };
                 
                 const reqS = tx.objectStore('syncQueue').getAll();
                 reqS.onsuccess = () => document.getElementById('queue-count').innerText = (reqS.result||[]).length;
@@ -542,6 +600,47 @@
                 tx.oncomplete = () => resolve();
             });
         }
+
+        // --- SISTEM SKU ANTI-DUPLIKAT (DOUBLE VALIDATION) ---
+        function syncSKUCounters() {
+            // Mencegah duplikat dengan memindai semua database ke localStorage
+            products.forEach(p => {
+                const parts = p.sku.split('-');
+                if (parts.length >= 4) {
+                    const num = parseInt(parts.pop());
+                    const prefix = parts.join('-');
+                    const localMax = parseInt(localStorage.getItem(`max_sku_${prefix}`) || 0);
+                    if (!isNaN(num) && num > localMax) {
+                        localStorage.setItem(`max_sku_${prefix}`, num);
+                    }
+                }
+            });
+        }
+
+        function generateSKUPrefix(kat, sub, ukr) {
+            const k = kat === 'KAIN' ? 'KAIN' : 'BJU';
+            return `${k}-${sub}-${ukr}`;
+        }
+
+        async function getNextSKU(prefix) {
+            let max = 0;
+            
+            // 1. Scan semua produk yang ada di array saat ini
+            products.forEach(p => {
+                if (p.sku.startsWith(prefix)) {
+                    const parts = p.sku.split('-');
+                    const num = parseInt(parts[parts.length - 1]);
+                    if (!isNaN(num) && num > max) max = num;
+                }
+            });
+            
+            // 2. Scan max tracking dari localStorage untuk memastikan nomor jalan terus walau data dihapus
+            const localMax = parseInt(localStorage.getItem(`max_sku_${prefix}`) || 0);
+            max = Math.max(max, localMax);
+            
+            return `${prefix}-${String(max + 1).padStart(3, '0')}`;
+        }
+        // --- SELESAI SISTEM SKU ---
 
         function addHistory(sku, jenis, perubahan) {
             const h = { id: Date.now(), tanggal: new Date().toISOString(), sku, jenisProduk: jenis, perubahan, namaPenginput: appState.admin };
@@ -582,23 +681,6 @@
             selUkuran.innerHTML = varian.map(o => `<option value="${o.id}">${o.nama}</option>`).join('');
             
             updateSKUPreview();
-        }
-
-        function generateSKUPrefix(kat, sub, ukr) {
-            const k = kat === 'KAIN' ? 'KAIN' : 'BJU';
-            return `${k}-${sub}-${ukr}`;
-        }
-
-        async function getNextSKU(prefix) {
-            // Algoritma Scan IndexedDB Mutlak (Anti-Duplicate)
-            const matches = products.filter(p => p.sku.startsWith(prefix));
-            let max = 0;
-            matches.forEach(m => {
-                const parts = m.sku.split('-');
-                const num = parseInt(parts[parts.length - 1]);
-                if(!isNaN(num) && num > max) max = num;
-            });
-            return `${prefix}-${String(max + 1).padStart(3, '0')}`;
         }
 
         async function updateSKUPreview() {
@@ -695,16 +777,17 @@
             const kat = document.getElementById('inp-kategori').value;
             const sub = document.getElementById('inp-sub').value;
             const ukr = document.getElementById('inp-ukuran').value;
+            const prefix = generateSKUPrefix(kat, sub, ukr);
             
             showToast('Memproses...');
-            const finalSKU = await getNextSKU(generateSKUPrefix(kat, sub, ukr));
+            const finalSKU = await getNextSKU(prefix);
             capWm = await generateWatermark(finalSKU, nama, getSubNama(sub));
             const calc = kalkulasiHarga();
 
             const p = {
                 id: Date.now(),
                 sku: finalSKU,
-                barcode: finalSKU, // Identik Apps Script
+                barcode: finalSKU, 
                 nama: nama,
                 kategori: kat,
                 subKategori: sub,
@@ -728,6 +811,12 @@
             tx.oncomplete = () => {
                 products.push(p);
                 activeProductForQuick = p;
+                
+                // Menyimpan Tracker SKU Maksimal di LocalStorage untuk Anti-Duplikat
+                const numPart = parseInt(finalSKU.split('-').pop());
+                const currentLocalMax = parseInt(localStorage.getItem(`max_sku_${prefix}`) || 0);
+                if(numPart > currentLocalMax) localStorage.setItem(`max_sku_${prefix}`, numPart);
+
                 addHistory(finalSKU, kat, 'Tambah Produk Baru');
                 pushToSyncQueue('add', p);
                 
@@ -785,8 +874,8 @@
                             <span class="text-[10px] text-slate-400">Stok: ${p.stok}</span>
                         </div>
                         <div class="flex gap-2">
-                            <button onclick="event.stopPropagation(); editProduk('${p.sku}')" class="flex-1 bg-blue-100 text-blue-600 py-1.5 rounded-lg text-xs font-bold flex justify-center items-center gap-1"><i data-lucide="edit-3" class="w-3 h-3"></i> Edit</button>
-                            <button onclick="event.stopPropagation(); hapusProduk('${p.sku}')" class="flex-1 bg-red-100 text-red-600 py-1.5 rounded-lg text-xs font-bold flex justify-center items-center gap-1"><i data-lucide="trash-2" class="w-3 h-3"></i> Hapus</button>
+                            <button type="button" onclick="event.stopPropagation(); event.preventDefault(); editProduk('${p.sku}')" class="relative z-10 flex-1 bg-blue-100 text-blue-600 py-1.5 rounded-lg text-xs font-bold flex justify-center items-center gap-1"><i data-lucide="edit-3" class="w-3 h-3 pointer-events-none"></i> Edit</button>
+                            <button type="button" onclick="event.stopPropagation(); event.preventDefault(); hapusProduk('${p.sku}')" class="relative z-10 flex-1 bg-red-100 text-red-600 py-1.5 rounded-lg text-xs font-bold flex justify-center items-center gap-1"><i data-lucide="trash-2" class="w-3 h-3 pointer-events-none"></i> Hapus</button>
                         </div>
                     </div>
                 </div>`;
@@ -848,6 +937,76 @@
                 renderGaleri();
                 showToast(`Produk ${sku} berhasil dihapus`);
             };
+        }
+
+        function editProduk(sku) {
+            const p = products.find(x => x.sku === sku);
+            if(!p) return;
+            document.getElementById('edit-sku').value = p.sku;
+            document.getElementById('edit-nama').value = p.nama;
+            document.getElementById('edit-harga').value = p.harga;
+            document.getElementById('edit-stok').value = p.stok;
+            document.getElementById('edit-status').value = p.status;
+            
+            const m = document.getElementById('modal-edit');
+            m.classList.remove('hidden'); m.classList.add('flex'); setTimeout(()=>m.classList.add('opacity-100'), 10);
+        }
+
+        function closeEditModal() {
+            const m = document.getElementById('modal-edit');
+            m.classList.remove('opacity-100'); setTimeout(()=>{m.classList.add('hidden'); m.classList.remove('flex');}, 300);
+        }
+
+        function simpanEdit() {
+            const sku = document.getElementById('edit-sku').value;
+            const p = products.find(x => x.sku === sku);
+            if(!p) return;
+
+            p.nama = document.getElementById('edit-nama').value;
+            p.harga = parseInt(document.getElementById('edit-harga').value) || 0;
+            p.stok = parseInt(document.getElementById('edit-stok').value) || 0;
+            p.status = document.getElementById('edit-status').value;
+            p.tanggalUpdate = new Date().toISOString();
+
+            // Recalc shopee
+            p.hargaReguler = Math.round((p.harga + 1250) / 0.90);
+            p.hargaXTRA = Math.round((p.harga + 1250) / 0.86);
+            p.hargaRekomendasi = Math.round(p.harga * 1.20);
+            p.statusShopee = 'Perlu Update';
+
+            const tx = db.transaction('products', 'readwrite');
+            tx.objectStore('products').put(p);
+            tx.oncomplete = () => {
+                addHistory(p.sku, p.kategori, 'Edit Produk via Galeri');
+                pushToSyncQueue('edit', p);
+                closeEditModal();
+                updateDashboard();
+                renderGaleri();
+                showToast('Perubahan berhasil disimpan');
+            };
+        }
+
+        // BARCODE SCANNER LOGIC
+        let html5QrcodeScanner = null;
+        function startScanBarcode() {
+            document.getElementById('modal-scanner').classList.remove('hidden');
+            document.getElementById('modal-scanner').classList.add('flex');
+            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
+            html5QrcodeScanner.render((decodedText) => {
+                stopScanBarcode();
+                document.getElementById('search-galeri').value = decodedText;
+                renderGaleri();
+                if(products.some(p => p.sku === decodedText)) {
+                    openDetail(decodedText);
+                } else {
+                    showToast(`SKU ${decodedText} tidak ditemukan.`);
+                }
+            }, () => {});
+        }
+        function stopScanBarcode() {
+            if(html5QrcodeScanner) { html5QrcodeScanner.clear(); html5QrcodeScanner = null; }
+            document.getElementById('modal-scanner').classList.add('hidden');
+            document.getElementById('modal-scanner').classList.remove('flex');
         }
 
         // MASTER DATA LOGIC
@@ -931,29 +1090,6 @@
                 masterData[type] = masterData[type].filter(x => x.id !== id);
                 saveMaster(); renderMasterData(); showToast('Data Master dihapus');
             }
-        }
-
-        // BARCODE SCANNER LOGIC
-        let html5QrcodeScanner = null;
-        function startScanBarcode() {
-            document.getElementById('modal-scanner').classList.remove('hidden');
-            document.getElementById('modal-scanner').classList.add('flex');
-            html5QrcodeScanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: {width: 250, height: 250} }, false);
-            html5QrcodeScanner.render((decodedText) => {
-                stopScanBarcode();
-                document.getElementById('search-galeri').value = decodedText;
-                renderGaleri();
-                if(products.some(p => p.sku === decodedText)) {
-                    openDetail(decodedText);
-                } else {
-                    showToast(`SKU ${decodedText} tidak ditemukan.`);
-                }
-            }, () => {});
-        }
-        function stopScanBarcode() {
-            if(html5QrcodeScanner) { html5QrcodeScanner.clear(); html5QrcodeScanner = null; }
-            document.getElementById('modal-scanner').classList.add('hidden');
-            document.getElementById('modal-scanner').classList.remove('flex');
         }
 
         // CHECKOUT & REVISI
@@ -1139,7 +1275,6 @@
         // BOOTSTRAP
         window.onload = async () => {
             initApp(); lucide.createIcons(); await initDB();
-            // Mengecek apakah protokol mengizinkan inisialisasi Service Worker dengan aman
             if ('serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
                 navigator.serviceWorker.register('sw.js').catch(console.error);
             } else {
